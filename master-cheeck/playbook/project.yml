@@ -1,0 +1,12 @@
+---
+    - name: Run openrc file
+      template: src= admin-openrc.sh.j2 dest=~/admin-openrc
+    - name: Create project
+      os_project:
+        cloud: mycloud
+        endpoint_type: admin
+        state: present
+        name: demoproject
+        description: test
+        domain_id: demoid
+        enabled: True
