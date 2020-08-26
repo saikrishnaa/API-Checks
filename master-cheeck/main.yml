@@ -1,6 +1,9 @@
 ---
 - name: localhost
   tasks:
+    - name: install Openstack Client package
+      roles:
+        - main
     - name: playbooks
         - include: "{{item}}"
           with_items:
