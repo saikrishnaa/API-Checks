@@ -1,0 +1,13 @@
+---
+- name: localhost
+  tasks:
+    - name: playbooks
+        - include: "{{item}}"
+          with_items:
+            - image.yml
+            - flavor.yml
+            - keypair.yml
+            - volume.yml
+            - project.yml
+            - instance.yml
+        
