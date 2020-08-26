@@ -14,4 +14,3 @@ templates: This directory is reserved for templates that will generate files on 
 tasks: This directory contains one or more files with tasks that would normally be defined in the tasks section of a regular Ansible playbook. These tasks can directly reference files and templates contained in their respective directories within the role, without the need to provide a full path to the file.
 
 vars: Variables for a role can be specified in files inside this directory and then referenced elsewhere in a role.
-
