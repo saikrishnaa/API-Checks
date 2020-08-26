@@ -1,0 +1,12 @@
+---
+- name: Openstack login Details
+  vars_prompt:
+    - name: project_name
+      prompt: "What is your project_name?"
+      private: no
+    - name: user_name
+      prompt: "What is your user_name?"
+      private: no
+    - name: password
+      prompt: "What is your password?"
+      private: yes
