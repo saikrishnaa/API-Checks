@@ -1,0 +1,15 @@
+---
+    - name: Run openrc file
+      template: src= admin-openrc.sh.j2 dest=~/admin-openrc
+    - nmae: launch a instance
+      os_server:
+        state: present
+        name: vm1
+        region_name: RegionOne
+        availability_zone: nova
+        image: cirros
+        key_name: mykey
+        timeout: 200
+        flavor: mini
+        security_groups: default
+        auto_ip: yes

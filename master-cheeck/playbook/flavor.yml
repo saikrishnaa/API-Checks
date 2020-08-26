@@ -1,0 +1,10 @@
+---
+    - name: Run openrc file
+      template: src= admin-openrc.sh.j2 dest=~/admin-openrc
+    - name: Create flavor
+      os_nova_flavor:
+          name: mini
+          ram: 1024
+          vcpus: 1
+          disk: 40
+          ephemeral: 10
