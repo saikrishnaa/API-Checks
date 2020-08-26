@@ -6,16 +6,10 @@
   vars: 
     vars_prompt
   tasks:
-    - include: vars.yml
     - include: image.yml
     - include: flavor.yml
     - include: keypair.yml
     - include: volume.yml
     - include: project.yml
     - include: instance.yml
-      
-  
-    
-    
-
-        
+     
