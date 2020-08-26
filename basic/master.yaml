@@ -1,0 +1,160 @@
+---
+- name: login as localhost
+  hosts: locathost
+  connection: local
+  remote_user: root
+  become: yes
+  vars_prompt:
+    - name: project_name
+      prompt: "What is your project_name?"
+      private: no
+    - name: user_name
+      prompt: "What is your user_name?"
+      private: no
+    - name: password
+      prompt: "What is your password?"
+      private: yes
+  tasks:
+    - name: update the local host
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        force_apt_get: True
+    - name: Install Openstack client packages
+      apt: name=python-openstackclient state=latest
+    - name: create openrc admin
+      file:
+        path: ~/admin-openrc
+        state: touch
+    - name: add details
+      copy:
+        dest: "~/admin-openrc"
+        content: |
+              export OS_PROJECT_DOMAIN_NAME=Default
+              export OS_USER_DOMAIN_NAME=Default
+              export OS_PROJECT_NAME="{{ project_name }}"
+              export OS_USERNAME="{{ user_name }}"
+              export OS_PASSWORD="{{ password }}"
+              export OS_AUTH_URL=http://controller:5000/v3
+              export OS_IDENTITY_API_VERSION=3
+              export OS_IMAGE_API_VERSION=2
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - name: Download cirros image
+      get_url:
+        url: http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+        dest: /tmp/cirros-0.3.4-x86_64-disk.img
+    - name: Upload cirros image to openstack
+      os_image:
+        name: cirros
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        filename: /tmp/cirros-0.3.4-x86_64-disk.img
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - name: Create flavor
+      os_nova_flavor:
+          name: mini
+          ram: 1024
+          vcpus: 1
+          disk: 10
+          ephemeral: 10
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - name: Create keypair
+      os_keypair:
+        name: my-key
+        auth_type: password
+        state: present
+      register: key
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - name: Create project
+      os_project:
+        cloud: mycloud
+        endpoint_type: admin
+        state: present
+        name: demoproject
+        description: test
+        domain_id: demoid
+        enabled: True
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - name: Create Volume
+      os_volume:
+        state: present
+        cloud: mycloud
+        display_name: test_volume
+        size: 1
+        availability_zone: nova
+        display_description: Test volume created by Ansible.
+    - name: Run openrc file
+      shell: "{{item}}"
+      with_items:
+        - export OS_PROJECT_DOMAIN_NAME=Default
+        - export OS_USER_DOMAIN_NAME=Default
+        - export OS_PROJECT_NAME="{{ project_name }}"
+        - export OS_USERNAME="{{ user_name }}"
+        - export OS_PASSWORD="{{ password }}"
+        - export OS_AUTH_URL=http://controller:5000/v3
+        - export OS_IDENTITY_API_VERSION=3
+        - export OS_IMAGE_API_VERSION=2
+    - nmae: launch a instance
+      os_server:
+        state: present
+        name: vm1
+        region_name: RegionOne
+        availability_zone: nova
+        image: cirros
+        key_name: mykey
+        timeout: 200
+        flavor: mini
+        security_groups: default
+        auto_ip: yes
