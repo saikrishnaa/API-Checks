@@ -1,0 +1,7 @@
+[all]
+locathost
+
+
+[all:vars]
+ansible_connection=local
+localhost ansible_python_interpreter=/usr/lib/python2.7
