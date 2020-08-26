@@ -1,16 +1,21 @@
 ---
-- name: localhost
+- hosts: localhost
+  become: true
+  roles:
+    - opks
+  vars: 
+    vars_prompt
   tasks:
-    - name: install Openstack Client package
-      roles:
-        - main
-    - name: playbooks
-        - include: "{{item}}"
-          with_items:
-            - image.yml
-            - flavor.yml
-            - keypair.yml
-            - volume.yml
-            - project.yml
-            - instance.yml
+    - include: vars.yml
+    - include: image.yml
+    - include: flavor.yml
+    - include: keypair.yml
+    - include: volume.yml
+    - include: project.yml
+    - include: instance.yml
+      
+  
+    
+    
+
         
