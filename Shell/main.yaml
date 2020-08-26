@@ -1,0 +1,49 @@
+---
+- name: login as locathost
+  hosts: localhost
+  remote_user: root
+  become: yes
+  tasks:
+    - name: update the local host
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        force_apt_get: True
+    - name: Install Openstack client packages
+      apt: name=python-openstackclient state=latest
+    - name: create openrc admin
+      file:
+        path: ~/admin-openrc
+        state: touch
+    - name: add details
+      copy:
+        dest: "~/admin-openrc"
+        content: |
+            export OS_PROJECT_DOMAIN_NAME=Default
+            export OS_USER_DOMAIN_NAME=Default
+            export OS_PROJECT_NAME=admin
+            export OS_USERNAME=admin
+            export OS_PASSWORD=root
+            export OS_AUTH_URL=http://controller:5000/v3
+            export OS_IDENTITY_API_VERSION=3
+            export OS_IMAGE_API_VERSION=2
+    - name: Install and Update Images
+      shell: "{{ item }}"
+      with_items:
+        - "wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img"
+        - "sh glance.sh"
+    - name: Create flavor
+      shell: "{{ item }}"
+      with_items:
+        - "sh flavor.sh"
+    - name: Create network
+      shell: "{{ item }}"
+      ignore_errors: yes
+      with_items:
+        - "sh network.sh"
+    - name: Create server
+      shell: "{{ item }}"
+      ignore_errors: yes
+      with_items:
+        - "sh instance.sh"
