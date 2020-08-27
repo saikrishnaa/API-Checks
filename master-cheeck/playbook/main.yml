@@ -1,14 +1,14 @@
 ---
     - name: image
-      import_playbook: image.yml
+      include: image.yml
     - name: flavor
-      import_playbook: flavor.yml
+      include: flavor.yml
     - name: keypair
-      import_playbook: keypair.yml
+      include: keypair.yml
     - name: volume
-      import_playbook: volume.yml
+      include: volume.yml
     - name: project
-      import_playbook: project.yml
+      include: project.yml
     - name: instance
-      import_playbook: instance.yml
+      include: instance.yml
     
