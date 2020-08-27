@@ -3,19 +3,6 @@
   become: true
   roles:
     - opks
-  vars: 
-    - prompt
   tasks:
-    - name: image
-      import_playbook: image.yml
-    - name: flavor
-      import_playbook: flavor.yml
-    - name: keypair
-      import_playbook: keypair.yml
-    - name: volume
-      import_playbook: volume.yml
-    - name: project
-      import_playbook: project.yml
-    - name: instance
-      import_playbook: instance.yml
-     
+    - name: playbooks
+      include: playbook/main.yml
