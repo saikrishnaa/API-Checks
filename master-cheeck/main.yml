@@ -4,12 +4,18 @@
   roles:
     - opks
   vars: 
-    - vars_prompt
+    - prompt
   tasks:
-    - include: image.yml
-    - include: flavor.yml
-    - include: keypair.yml
-    - include: volume.yml
-    - include: project.yml
-    - include: instance.yml
+    - name: image
+      import_playbook: image.yml
+    - name: flavor
+      import_playbook: flavor.yml
+    - name: keypair
+      import_playbook: keypair.yml
+    - name: volume
+      import_playbook: volume.yml
+    - name: project
+      import_playbook: project.yml
+    - name: instance
+      import_playbook: instance.yml
      
