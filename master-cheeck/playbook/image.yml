@@ -1,6 +1,6 @@
 ---
     - name: Run openrc file
-      template: src= admin-openrc.sh.j2 dest=~/admin-openrc
+      template: src=../template/admin-openrc.sh.j2 dest=~/admin-openrc
     - name: Download cirros image
       get_url:
         url: http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
