@@ -3,6 +3,16 @@
   become: true
   roles:
     - opks
+  vars_prompt:
+    - name: project_name
+      prompt: "What is your project_name?"
+      private: no
+    - name: user_name
+      prompt: "What is your user_name?"
+      private: no
+    - name: password
+      prompt: "What is your password?"
+      private: yes
   tasks:
     - name: playbooks
       include: playbook/main.yml
